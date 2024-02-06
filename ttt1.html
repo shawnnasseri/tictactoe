@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe By Shawn</title>
+    <style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 20px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: lightgreen;
+            border: 2px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+        }
+        .square:hover {
+            background-color: lightyellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="board">
+        <div class="square">X</div>
+        <div class="square"></div>
+        <div class="square">O</div>
+        <div class="square"></div>
+        <div class="square">X</div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+    </div>
+</body>
+</html>
