@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe by Shawn</title>
+    <style>
+      body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 20px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: lightgreen;
+            border: 2px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            cursor: pointer;
+        }
+        .square:hover {
+            background-color: lightyellow;
+        }
+        .status, .win {
+            margin: 20px auto;
+            border: 2px solid black;
+            width: 200px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+    <div id="x_or_o_turn" class="status">O's Turn</div>
+    <div id="winner" class="win">Win condition will show in this box</div>
+    <div id="board" class="board"></div>
+
+    <script>
+        const board = document.getElementById('board');
+        for (let i = 0; i < 9; i++) {
+            let square = document.createElement('div');
+            square.className = 'square';
+            square.id = 'sq' + i;
+            square.addEventListener('click', function() {
+                this.innerText = 'X';
+                console.log('Square ' + i); // Checking its working before alert SN Feb 9 2023
+                alert('Square ' + i);
+            });
+            board.appendChild(square);
+        }
+    </script>
+</body>
+</html>
