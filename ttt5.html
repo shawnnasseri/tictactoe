@@ -1,0 +1,149 @@
+<!-- Author:  Shawn Nasseri                          -->
+<!-- Project: Tic Tac Toe                            -->
+<!-- Date:    Feb 18, 2024                           -->
+<!-- Description                                     -->
+<!-- Tic Tac Toe game for DGMD E-28                  -->
+<!-- Play Tic Tac Toe with X player                  -->
+<!-- and Y player. Program will check                -->
+<!-- for win, lose and stalemate                     -->
+<!-- two sound files will give click sound           -->
+<!-- and win sound. Click sound is at mouse click    -->
+<!-- win sound at x or o winning                     -->
+<!-- Files needed = ttt5.html, click.mp3, win.mp3    -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe by Shawn</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 20px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: lightgreen;
+            border: 2px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            cursor: pointer;
+        }
+
+        .square:hover {
+            background-color: lightyellow;
+        }
+
+        .status,
+        .win {
+            margin: 20px auto;
+            border: 2px solid black;
+            width: 200px;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Tic Tac Toe</h1>
+    <button id="startGame">Start Game</button>
+    <div id="x_or_o_turn" class="status"></div>
+    <div id="winner" class="win"></div>
+    <div id="board" class="board"></div>
+
+    <script>
+        const clickSound = new Audio("click.mp3");  // Create an audio object for the click sound
+        const winSound = new Audio("winChime.mp3"); // Creat an audio object for the win sound
+        let currentPlayer = 'X';
+        const squares = [];
+
+        function startGame() {
+            document.getElementById('board').innerHTML = '';
+            document.getElementById('winner').innerText = 'New Game';
+            currentPlayer = Math.random() < 0.5 ? 'X' : 'O';
+            document.getElementById('x_or_o_turn').innerText = `${currentPlayer}'s Turn`;
+
+            // Clear the squares array for a new game
+            squares.length = 0;
+
+            for (let i = 0; i < 9; i++) {
+                let square = document.createElement('div');
+                square.className = 'square';
+                square.addEventListener('click', function () {
+                    clickSound.play(); // Play the click sound when mouse click in square
+                    if (this.innerText === '') {
+                        this.innerText = currentPlayer;
+                        checkGame();
+                        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                        document.getElementById('x_or_o_turn').innerText = `${currentPlayer}'s Turn`;
+                    }
+                });
+                document.getElementById('board').appendChild(square);
+                squares.push(square);
+            }
+        }
+
+        function checkGame() {
+
+            const possibleWinsArray = Array.from(document.querySelectorAll('.square')).map(square => square.innerText || '-');
+
+            const winConditions = [
+                possibleWinsArray.slice(0, 3).join(''),  // row 1
+                possibleWinsArray.slice(3, 6).join(''),  // row 2
+                possibleWinsArray.slice(6, 9).join(''),  // row 3
+                possibleWinsArray[0] + possibleWinsArray[3] + possibleWinsArray[6], // col 1
+                possibleWinsArray[1] + possibleWinsArray[4] + possibleWinsArray[7], // col 2
+                possibleWinsArray[2] + possibleWinsArray[5] + possibleWinsArray[8], // col 3
+                possibleWinsArray[0] + possibleWinsArray[4] + possibleWinsArray[8], // diag 1
+                possibleWinsArray[2] + possibleWinsArray[4] + possibleWinsArray[6]  // diag 2
+            ];
+
+            let winFound = winConditions.some(condition => condition === "XXX" || condition === "OOO");
+
+            if (winFound) {
+                winSound.play(); // play winner sound
+                console.log("We have a winner " + currentPlayer);
+                console.log(possibleWinsArray);
+                document.getElementById('winner').innerText = `Player ${currentPlayer} wins!`;
+                document.getElementById('x_or_o_turn').innerText = '';
+                removeListeners();
+            } else if (!possibleWinsArray.includes('-')) {
+                console.log("Stalemate!")
+                console.log(possibleWinsArray);
+                document.getElementById('winner').innerText = 'Stalemate!';
+                document.getElementById('x_or_o_turn').innerText = '';
+                removeListeners();
+            }
+
+        }
+
+
+        function removeListeners() {
+            console.log("Removing event listeners so no more clicks are allowed.");
+            squares.forEach(square => {
+                const newSquare = square.cloneNode(true);
+                square.parentNode.replaceChild(newSquare, square);
+            });
+        }
+
+        document.getElementById('startGame').addEventListener('click', startGame);
+        startGame();
+    </script>
+
+</body>
+
+</html>
